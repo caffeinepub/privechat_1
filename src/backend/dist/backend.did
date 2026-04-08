@@ -1,0 +1,114 @@
+type UserPreferences = 
+ record {
+   language: Language;
+   pinHash: opt text;
+   theme: Theme;
+ };
+type UserId = principal;
+type User = 
+ record {
+   displayName: text;
+   "principal": UserId;
+ };
+type Timestamp = int;
+type Theme = text;
+type Reaction = 
+ record {
+   emoji: text;
+   messageId: MessageId;
+   timestamp: Timestamp;
+   userId: UserId;
+ };
+type PresenceStatus = 
+ variant {
+   Away;
+   Offline;
+   Online;
+ };
+type MessageId = nat;
+type Message = 
+ record {
+   content: text;
+   conversationId: ConversationId;
+   fileAttachment: opt FileAttachment;
+   id: MessageId;
+   reactions: vec Reaction;
+   sender: UserId;
+   timestamp: Timestamp;
+ };
+type Language = text;
+type FriendStatus = 
+ variant {
+   Accepted;
+   Pending;
+   Rejected;
+ };
+type FriendRequest = 
+ record {
+   from: UserId;
+   status: FriendStatus;
+   timestamp: Timestamp;
+   to: UserId;
+ };
+type FileAttachment = 
+ record {
+   fileId: text;
+   filename: text;
+   mimeType: text;
+   size: nat;
+ };
+type ConversationId = nat;
+service : {
+  addReaction: (messageId: MessageId, emoji: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  getBulkPresence: (userIds: vec UserId) ->
+   (vec record {
+          UserId;
+          PresenceStatus;
+        }) query;
+  getCurrentUser: () -> (opt User);
+  getMessages: (conversationId: ConversationId) -> (vec Message) query;
+  getOrCreateConversation: (other: UserId) -> (ConversationId);
+  getPresence: (userId: UserId) -> (opt PresenceStatus) query;
+  getReactions: (messageId: MessageId) ->
+   (variant {
+      err: text;
+      ok: vec Reaction;
+    }) query;
+  getTypingIndicators: (conversationId: ConversationId) -> (vec UserId) query;
+  getUserPreferences: () -> (opt UserPreferences) query;
+  listFriendRequests: () -> (vec FriendRequest) query;
+  listFriends: () -> (vec User) query;
+  listUsers: () -> (vec User) query;
+  registerUser: (displayName: text) -> ();
+  removeFriend: (userId: UserId) -> (variant {
+                                       err: text;
+                                       ok;
+                                     });
+  removeReaction: (messageId: MessageId, emoji: text) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  respondToFriendRequest: (from: UserId, accept: bool) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  sendFileMessage: (conversationId: ConversationId, fileId: text, filename:
+   text, mimeType: text, size: nat) -> (variant {
+                                          err: text;
+                                          ok: Message;
+                                        });
+  sendFriendRequest: (to: UserId) -> (variant {
+                                        err: text;
+                                        ok;
+                                      });
+  sendMessage: (conversationId: ConversationId, content: text) -> (MessageId);
+  setPresence: (status: PresenceStatus) -> ();
+  setTyping: (conversationId: ConversationId, isTyping: bool) -> ();
+  setUserPreferences: (theme: text, language: text, pinHash: opt text) -> ();
+}

@@ -1,0 +1,136 @@
+// Version: 1.0.0
+type ConversationId__147913217 = ConversationId__966455625;
+type ConversationId__966455625 = Nat;
+type ConversationId__967020711 = ConversationId__966455625;
+type Conversation__686238356 =
+  {
+    createdAt : Timestamp__753029554;
+    id : ConversationId__147913217;
+    participants : (UserId__1023572875, UserId__1023572875)
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type FileAttachment__288609799 = FileAttachment__729841087;
+type FileAttachment__729841087 =
+  {fileId : Text; filename : Text; mimeType : Text; size : Nat};
+type FriendRequest__577060681 =
+  {
+    from : UserId__962466436;
+    status : FriendStatus__571750590;
+    timestamp : Timestamp__553438310;
+    to : UserId__962466436
+  };
+type FriendStatus__571750590 = {#Accepted; #Pending; #Rejected};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Language__34127771 = Text;
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type MessageId__291319400 = Nat;
+type MessageId__810287564 = MessageId__291319400;
+type MessageId__835843704 = MessageId__291319400;
+type Message__454780518 =
+  {
+    content : Text;
+    conversationId : ConversationId__147913217;
+    fileAttachment : ?FileAttachment__288609799;
+    id : MessageId__810287564;
+    reactions : [Reaction__248509560];
+    sender : UserId__1023572875;
+    timestamp : Timestamp__753029554
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PresenceEntry__261733908 =
+  {
+    status : PresenceStatus__679626878;
+    updatedAt : Timestamp__559583003;
+    userId : UserId__154595468
+  };
+type PresenceStatus__679626878 = {#Away; #Offline; #Online};
+type Reaction__248509560 = Reaction__268313130;
+type Reaction__268313130 =
+  {
+    emoji : Text;
+    messageId : MessageId__835843704;
+    timestamp : Timestamp__298413020;
+    userId : UserId__127728390
+  };
+type Theme__897056239 = Text;
+type Timestamp__143681437 = Timestamp__301639476;
+type Timestamp__298413020 = Timestamp__301639476;
+type Timestamp__301639476 = Int;
+type Timestamp__553438310 = Timestamp__301639476;
+type Timestamp__559583003 = Timestamp__301639476;
+type Timestamp__753029554 = Timestamp__301639476;
+type TypingIndicator__71940894 =
+  {
+    conversationId : ConversationId__967020711;
+    timestamp : Timestamp__143681437;
+    userId : UserId__431862992
+  };
+type UserId__1023572875 = UserId__158757552;
+type UserId__127728390 = UserId__158757552;
+type UserId__154595468 = UserId__158757552;
+type UserId__158757552 = Principal;
+type UserId__431862992 = UserId__158757552;
+type UserId__962466436 = UserId__158757552;
+type UserPreferences__200170847 =
+  {language : Language__34127771; pinHash : ?Text; theme : Theme__897056239};
+type User__933853769 = {displayName : Text; principal : UserId__1023572875};
+actor {
+  stable conversations :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Conversation__686238356]];
+      var elementIndex : Nat__490723111
+    };
+  stable friendRequests :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?FriendRequest__577060681]];
+      var elementIndex : Nat__490723111
+    };
+  stable messages :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Message__454780518]];
+      var elementIndex : Nat__490723111
+    };
+  stable var nextConversationId : Nat;
+  stable var nextMessageId : Nat;
+  stable preferencesStore :
+    {
+      var root : Node__46230540<Principal, UserPreferences__200170847>;
+      var size : Nat__490723111
+    };
+  stable presences :
+    {
+      var root : Node__46230540<UserId__154595468, PresenceEntry__261733908>;
+      var size : Nat__490723111
+    };
+  stable reactions :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Reaction__268313130]];
+      var elementIndex : Nat__490723111
+    };
+  stable typingMap :
+    {
+      var root :
+        Node__46230540<ConversationId__967020711,
+                        Map__605269027<UserId__431862992,
+                                        TypingIndicator__71940894>>;
+      var size : Nat__490723111
+    };
+  stable users :
+    {
+      var root : Node__46230540<UserId__1023572875, User__933853769>;
+      var size : Nat__490723111
+    }
+};

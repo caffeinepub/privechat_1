@@ -1,0 +1,26 @@
+{
+  "overview": "PriveChat is a secure, real-time direct messaging app with Internet Identity login, file sharing, emoji reactions, presence status, typing indicators, and friends list management for one-on-one conversations.",
+  "features": [
+    "Internet Identity secure sign-in",
+    "One-on-one persistent messaging",
+    "File sharing with upload/download",
+    "Emoji message reactions",
+    "Typing indicators and dynamic polling",
+    "Online/Away/Offline presence status",
+    "Friends list with add/remove and request management",
+    "User directory with search",
+    "Mobile-responsive split-panel layout"
+  ],
+  "category": "productivity",
+  "tags": [
+    "chat",
+    "messaging",
+    "secure",
+    "real-time",
+    "friends",
+    "file-sharing",
+    "reactions",
+    "presence"
+  ],
+  "last_updated": "2026-04-07T19:58:26.366Z"
+}
